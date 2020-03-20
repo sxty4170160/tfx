@@ -36,7 +36,32 @@ class InfraValidator(base_component.BaseComponent):
   binary that is used in production, and additionaly sending some requests to
   the model server. Such requests can be specified from Examples artifact.
 
-  ## Example
+  ## Examples
+
+  Full example using TensorFlowServing binary running on local docker.
+
+  ```
+  infra_validator = InfraValidator(
+      model=trainer.outputs['model'],
+      examples=test_example_gen.outputs['examples'],
+      serving_spec=ServingSpec(
+          tensorflow_serving=TensorFlowServing(  # Using TF Serving.
+              tags=['latest']
+          ),
+          local_docker=LocalDockerConfig(),  # Running on local docker.
+      ),
+      validation_spec=ValidationSpec(
+          max_loading_time_seconds=60,
+          num_tries=5,
+      ),
+      request_spec=RequestSpec(
+          tensorflow_serving=TensorFlowServingRequestSpec(),
+          num_examples=1,
+      )
+  )
+  ```
+
+  Minimal example when running on Kubernetes.
 
   ```
   infra_validator = InfraValidator(
@@ -46,18 +71,9 @@ class InfraValidator(base_component.BaseComponent):
           tensorflow_serving=TensorFlowServing(
               tags=['latest']
           ),
-          local_docker=LocalDockerConfig(),
+          kubernetes=KubernetesConfig(),  # Running on Kubernetes.
       ),
-      validation_spec=ValidationSpec(
-          max_loading_time_seconds=60,
-          num_tries=5,
-      ),
-      request_spec=RequestSpec(
-          tensorflow_serving=TensorFlowServingRequestSpec(rpc_kind=CLASSIFY),
-          max_examples=10,
-      )
   )
-  ```
   """
 
   SPEC_CLASS = standard_component_specs.InfraValidatorSpec
