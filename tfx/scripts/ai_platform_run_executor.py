@@ -72,7 +72,7 @@ def _run_executor(args: argparse.Namespace, beam_args: List[Text]) -> None:
 
   # Log the output metadata to a file. So that it can be picked up by MP.
   metadata_uri = full_metadata_dict['output_metadata_uri']
-  output_metadata = execution_result_pb2.ExecutorOutput()
+  output_metadata = execution_result_pb2.ExecutionResult()
   for key, output_artifacts in outputs.items():
     # Assuming each output is a singleton artifact.
     output_metadata.output_dict[key].CopyFrom(
