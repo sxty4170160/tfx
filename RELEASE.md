@@ -21,6 +21,8 @@
 *   Added ability to enable quantization in tflite rewriter.
 *   Added k8s pod labels when the pipeline is executed via KubeflowDagRunner for
     better usage telemetry.
+*   Added support for hyphens(dash) instead of underscores in CLI flags.
+    Underscores will be supported as well.
 
 ### Deprecations
 
